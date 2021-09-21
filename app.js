@@ -4,21 +4,29 @@ const  url = require('url')
 const ejs = require('ejs')
 http.createServer(function (request, response) {
     router.static(request,response,'static')
-    const pathName = url.parse(request.url).pathname
-    if (pathName==='/login'){
-        let msg = "数据库里面获取的数据"
-        let list = [
-            {title:1},
-            {title:2},
-            {title:3},
-            {title:4},
-            {title:5}
-        ]
-        ejs.renderFile('./views/login.ejs', {msg,list}, (err, data)=>{
+    let pathName = url.parse(request.url).pathname
+    console.log('path',pathName)
+    console.log('请求方法',request.method)
+    if (pathName==='/news'){
+        response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+        response.end('哈哈哈')
+    } else if (pathName==='/login'){
+        ejs.renderFile("./views/form.ejs",{},(err,data)=>{
             response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
             response.end(data)
-        });
-    }else if (pathName==='/register'){
+        })
+    }else if (pathName==='/doLogin'){
+        //获取post传值
+        let postData = ''
+        request.on('data',(chunk)=>{
+            postData+=chunk
+        })
+        request.on('end',()=>{
+            console.log('POST数据',postData)
+            response.end(postData)
+        })
+
+    } else if (pathName==='/register'){
         response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
         response.end('执行注册')
     }else if (pathName==='/admin'){

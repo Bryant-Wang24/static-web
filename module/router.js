@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const url = require('url')
 const getFileType = (extname)=>{
     let data = fs.readFileSync('./data/mine.json')
     let mineObj = JSON.parse(data.toString())
