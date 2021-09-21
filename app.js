@@ -1,5 +1,5 @@
 const http = require('http');
-const router= require('./modules/router')
+const router= require('./module/router')
 const  url = require('url')
 http.createServer(function (request, response) {
     router.static(request,response,'static')
