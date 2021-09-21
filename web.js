@@ -1,25 +1,22 @@
 const http = require('http');
-const fs = require('fs')
-const path = require('path')
-const xx= require('./modules/xx')
+const router= require('./modules/router')
+const  url = require('url')
 http.createServer(function (request, response) {
-    // response.writeHead(200, { 'Content-Type': 'text/plain' });
-
-    let pathName = request.url
-    pathName = pathName === '/' ? '/index.html' : pathName
-    const curName = path.extname(pathName)//获取url的后缀来判断文件类型
-    console.log(curName)
-    if (pathName !== '/favicon.ico') {
-        fs.readFile('./statics' + pathName, (err, data) => {
-            if (err) {
-                console.log(err)
-                response.writeHead(404, { 'Content-Type': 'text/html;charset=utf-8' });
-                response.end('页面不存在')
-            }
-            const mine = xx.getFileType(curName)
-            response.writeHead(200, { 'Content-Type': `${mine}` });
-            response.end(data);
-        })
+    router.static(request,response,'static')
+    const pathName = url.parse(request.url).pathname
+    console.log('path',pathName)
+    if (pathName==='/login'){
+        response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+        response.end('执行登陆')
+    }else if (pathName==='/register'){
+        response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+        response.end('执行注册')
+    }else if (pathName==='/admin'){
+        response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+        response.end('处理后的业务逻辑')
+    }else{
+        response.writeHead(404, { 'Content-Type': 'text/html;charset=utf-8' });
+        response.end('页面不存在')
     }
 
 }).listen(8081);
